@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -30,7 +32,7 @@ public class AutoCorrection {
 		
 		System.out.println("Applying Corrections.");
 		String text = doCorrections(l);
-		
+		overwrite(text, filePath);
 		
 		System.out.println("Printing Corrected Text.");
 		System.out.println(text);
@@ -40,9 +42,28 @@ public class AutoCorrection {
 	}
 	
 	/*
+	 * Overwrites the text file at the file path provided with the
+	 * corrected text. Uses FileWriter to replace its content
+	 * @static
+	 * @param (String) text corrected text to overwrite the text file with
+	 * @param 
+	 */
+	private static void overwrite(String correctedText, String filePath) {
+		try {
+			FileWriter fw = new FileWriter(new File(filePath), false);
+			fw.write(correctedText);
+			fw.close();
+		} catch (IOException e) { //otherwise print error
+			e.printStackTrace();
+		}
+		
+	}
+
+	/*
 	 * Takes in the path of a text file and returns a list of 
 	 * type String. The contents of the text file will be in 
 	 * the zeroth index
+	 * 
 	 */
 	public static List<String> readFromFile(String filePath){
 		
@@ -60,9 +81,15 @@ public class AutoCorrection {
 		
 	}
 	
-	//Takes in a List of type String and applies corrections to the contents.
-	//Returns a String containing the corrected content.
-	//Currently, capitalizes the start of a sentence
+	/*
+	 *Takes in a List of type String and applies corrections to the contents.
+	 *Returns a String containing the corrected content.
+	 *Currently, capitalizes the start of a sentence
+	 *
+	 *@static
+	 *@param (List<String>) list list containing the contents of the text file
+	 *@returns String of corrected text
+	 */
 	public static String doCorrections(List<String> list){
 		String text = list.get(0);
 		text = text.substring(0, 1).toUpperCase() + text.substring(1); //capitalizes first character
@@ -73,6 +100,7 @@ public class AutoCorrection {
 				}
 			}
 		}
+		
 		
 		return text;
 		
